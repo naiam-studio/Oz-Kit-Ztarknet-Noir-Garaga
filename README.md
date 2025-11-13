@@ -132,7 +132,16 @@ Serialize Noir proof as contract calldata:
 garaga calldata --system ultra_starknet_zk_honk --proof circuit/target/proof --vk circuit/target/vk --public-inputs circuit/target/public_inputs > calldata.txt
 ```
 
-Invoke verifier contract:
+Let's first call the verifier contract (without creating a transaction):
+
+```bash
+sncast call \
+    --contract-address 0x02048def58e122c910f80619ebab076b0ef5513550d38afdfdf2d8a1710fa7c6 \
+    --function "verify_ultra_starknet_zk_honk_proof" \
+    --calldata $(cat calldata.txt)
+```
+
+Now let's invoke the verifier contract:
 
 ```bash
 sncast invoke \
