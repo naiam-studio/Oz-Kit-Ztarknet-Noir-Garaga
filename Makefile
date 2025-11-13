@@ -22,3 +22,13 @@ account-balance:
 	sncast balance \
 		--token-address $(FEE_TOKEN_ADDRESS) \
 		--url $(URL)
+
+## Install dependencies
+
+install-noir:
+	curl -L https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install | bash
+	noirup --version 1.0.0-beta.5
+
+install-barretenberg:
+	curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/bbup/install | bash
+	bbup --version 0.87.4-starknet.1

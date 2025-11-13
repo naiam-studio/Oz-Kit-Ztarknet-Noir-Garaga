@@ -4,7 +4,6 @@ const ERC20 = require('./ERC20.json');
 
 const recipient = process.env.TOPUP_ADDRESS;
 const fee_token_address = '0x1ad102b4c4b3e40a51b6fb8a446275d600555bd63a95cdceed3e5cef8a6bc1d';
-const topup_amount = 1000000000000000000000;
 
 const provider = new starknet.RpcProvider({
     nodeUrl: 'https://ztarknet-madara.d.karnot.xyz',
@@ -31,8 +30,8 @@ async function transfer() {
     let result = contract.populate('transfer', {
         recipient,
         amount: {
-            low: topup_amount,
-            high: 0,
+            low: 0,
+            high: 1,
         },
     });
 
