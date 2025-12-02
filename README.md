@@ -1,4 +1,4 @@
-# [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?template_repository=Ztarknet/quickstart)
+# [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?template_repository=/naiam-studio/Oz-Kit-Ztarknet-Noir-Garaga)
 
 # Oz Kit - Noir-Garaga-Ztarknet Kit
 
