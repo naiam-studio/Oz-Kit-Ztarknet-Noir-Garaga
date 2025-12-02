@@ -41,10 +41,7 @@ make account-create
 
 # 4. Top up account via faucet at https://faucet.ztarknet.cash/ (paste the address above)
 
-# 5. Install admin dependencies (required for top-up)
-cd admin && npm install && cd ..
-
-# 6. Deploy account
+# 5. Deploy account
 make account-topup
 make account-deploy
 
@@ -54,15 +51,15 @@ nargo check
 nargo execute witness
 
 # 7. Generate proof and verifier
-bb prove --scheme ultra_honk --zk --oracle_hash starknet -b ./target/circuit.json -w ./target/witness.gz -o ./target
-bb write_vk --scheme ultra_honk --oracle_hash starknet -b ./target/circuit.json -o ./target
+bb prove --scheme ultra_honk --zk --oracle_hash starknet -b ./target/circuit.json -w ./target/witness.gz -o ./target/proof
+bb write_vk --scheme ultra_honk --oracle_hash starknet -b ./target/circuit.json -o ./target/vk
 cd ..
 
 # 8. Generate verifier contract and deploy
 garaga gen --system ultra_starknet_zk_honk --vk ./circuit/target/vk --project-name verifier
 cd verifier && scarb build && cd ..
 
-# 10. Run the frontend
+# 9. Run the frontend
 make artifacts
 cd app && npm install --legacy-peer-deps && npm run dev
 ```
@@ -155,8 +152,11 @@ nargo --version  # Should output: nargo version = 1.0.0-beta.1
 # Use the automated installer shipped with this repo
 make install-barretenberg
 
-# If that fails, try the official Aztec installer
+# If that fails, try the official Aztec installer (adds `bbup`)
 curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/master/barretenberg/cpp/installation/install | bash
+
+# Then install bb via bbup (explicit version)
+bbup --version 0.67.0
 
 # Verify installation
 bb --version  # Should output: 0.67.0
@@ -305,19 +305,24 @@ Generate a verifying key:
 bb write_vk --scheme ultra_honk --oracle_hash starknet -b ./target/circuit.json -o ./target/vk
 ```
 
-### Generate Verifier Contract
+### Verifier Contract
 
-Let Garaga automatically generate a Scarb project for you:
-
-```bash
-garaga gen --system ultra_starknet_zk_honk --vk ./circuit/target/vk --project-name verifier
-```
-
-Now build the contract:
+Use the provided verifier project (recommended for reproducibility):
 
 ```bash
+cd verifier
 scarb build
+cd ..
 ```
+
+Optional — regenerate with Garaga (advanced):
+
+```bash
+# Requires a compatible verification key and Garaga >= 0.15
+garaga gen --system ultra_starknet_honk --vk ./circuit/target/vk --project-name verifier_auto
+cd verifier_auto && scarb build && cd ..
+```
+If the command fails parsing the VK, ensure you're using bb 0.67.0 and regenerated the VK with the commands above. Some Garaga versions may not parse all VK variants.
 
 ### Deploy Verifier Contract
 

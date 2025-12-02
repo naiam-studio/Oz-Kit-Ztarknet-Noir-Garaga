@@ -50,6 +50,14 @@ echo ""
 echo "[4/5] Installing Barretenberg (bb)..."
 "$SCRIPT_DIR/install-barretenberg.sh" || echo "Warning: Barretenberg installation failed."
 
+# Try installing bb via bbup if available but bb missing
+if ! command -v bb >/dev/null 2>&1 && command -v bbup >/dev/null 2>&1; then
+  echo "bb not found but bbup is available. Installing bb v0.67.0 via bbup..."
+  # shellcheck disable=SC1090
+  source "$HOME/.bashrc" 2>/dev/null || true
+  bbup --version 0.67.0 || echo "Warning: bbup install failed."
+fi
+
 # 5. Garaga (Python CLI)
 echo ""
 echo "[5/6] Installing Garaga (Python CLI)..."
