@@ -150,6 +150,26 @@ curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/master/ba
 bb --version  # Should output: 0.67.0
 ```
 
+#### 6. Install Garaga 0.15.5 (Python CLI)
+
+Garaga es la herramienta que genera el contrato verificador para Starknet y serializa la prueba como calldata.
+
+```bash
+# Install via pip (recommended version)
+pip install garaga==0.15.5
+
+# Verify installation
+garaga --version  # Should output: garaga 0.15.5
+```
+
+Si prefieres instalar la última versión disponible:
+
+```bash
+pip install garaga
+```
+
+Nota: asegúrate de que tu entorno Python esté disponible en PATH (por ejemplo, usando `python3`/`pip3`) y que el binario `garaga` quede accesible en tu shell.
+
 #### 5. Install JavaScript Dependencies in `app`
 
 ```bash
@@ -270,7 +290,7 @@ bb prove --scheme ultra_honk --zk --oracle_hash starknet -b ./target/circuit.jso
 Generate a verifying key:
 
 ```bash
-bb write_vk --scheme ultra_honk --oracle_hash starknet -b ./target/circuit.json -o ./target
+bb write_vk --scheme ultra_honk --oracle_hash starknet -b ./target/circuit.json -o ./target/vk
 ```
 
 ### Generate Verifier Contract
