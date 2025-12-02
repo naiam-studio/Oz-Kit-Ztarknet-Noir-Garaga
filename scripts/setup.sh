@@ -50,9 +50,24 @@ echo ""
 echo "[4/5] Installing Barretenberg (bb)..."
 "$SCRIPT_DIR/install-barretenberg.sh" || echo "Warning: Barretenberg installation failed."
 
-# 5. JavaScript deps
+# 5. Garaga (Python CLI)
 echo ""
-echo "[5/5] Installing JavaScript dependencies..."
+echo "[5/6] Installing Garaga (Python CLI)..."
+if ! command -v garaga >/dev/null 2>&1; then
+  if command -v pip3 >/dev/null 2>&1; then
+    pip3 install --user garaga==0.15.5 || echo "Warning: pip3 install garaga failed."
+  elif command -v pip >/dev/null 2>&1; then
+    pip install --user garaga==0.15.5 || echo "Warning: pip install garaga failed."
+  else
+    echo "Warning: pip/pip3 not found. Skipping Garaga installation."
+  fi
+else
+  echo "Garaga already installed."
+fi
+
+# 6. JavaScript deps
+echo ""
+echo "[6/6] Installing JavaScript dependencies..."
 cd "$REPO_DIR/app"
 npm install --legacy-peer-deps || echo "Warning: npm install failed."
 cd "$REPO_DIR"
