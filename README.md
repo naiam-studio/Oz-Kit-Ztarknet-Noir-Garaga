@@ -1,4 +1,4 @@
-# [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?template_repository=/naiam-studio/Oz-Kit-Ztarknet-Noir-Garaga)
+# [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?template_repository=naiam-studio/Oz-Kit-Ztarknet-Noir-Garaga)
 
 # Oz Kit - Noir-Garaga-Ztarknet Kit
 
@@ -35,8 +35,23 @@ You can use this template as a starting point for your own ZK dApps on Starknet.
 #### 1. Install Rust and Cargo
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
+# Install rustup (recommended). If a system Rust is already present
+# and you want rustup to install alongside it, set
+# RUSTUP_INIT_SKIP_PATH_CHECK=yes to skip the PATH check.
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | RUSTUP_INIT_SKIP_PATH_CHECK=yes sh -s -- -y
+
+# Source the correct cargo environment file. Some environments (CI
+# images or preinstalled Rust) place cargo under /usr/local, others
+# under the user home. This checks both locations.
+if [ -f /usr/local/cargo/env ]; then
+  . /usr/local/cargo/env
+elif [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+else
+  echo "Warning: cargo env file not found. Restart your shell or add Cargo's bin to PATH manually."
+fi
+
+# After installation you may need to restart your shell for PATH to update.
 ```
 
 #### 2. Install Scarb 2.9.2
