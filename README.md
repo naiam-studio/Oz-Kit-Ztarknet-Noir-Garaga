@@ -21,16 +21,18 @@ The fastest way to get everything running. Choose one:
 Option A — Open in Codespaces (recommended):
 
 ```bash
-# Open directly in GitHub Codespaces (click the link)
+# Open directly in GitHub Codespaces (click the badge at the top or this link)
 # https://github.com/codespaces/new?template_repository=naiam-studio/Oz-Kit-Ztarknet-Noir-Garaga
 ```
+
+> **Note:** Codespaces will always use `/workspaces/quickstart` as the workspace folder regardless of your fork's name, so all paths in the documentation work as-is.
 
 Option B — Clone locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/naiam-studio/Oz-Kit-Ztarknet-Noir-Garaga.git
-cd Oz-Kit-Ztarknet-Noir-Garaga
+git clone https://github.com/YOUR_USERNAME/Oz-Kit-Ztarknet-Noir-Garaga.git
+cd Oz-Kit-Ztarknet-Noir-Garaga  # Or your fork name
 
 # 2. Run automated setup (installs Rust, Scarb, Noir, bb, and npm deps)
 ./scripts/setup.sh

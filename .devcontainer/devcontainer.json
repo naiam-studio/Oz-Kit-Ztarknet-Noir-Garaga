@@ -1,6 +1,8 @@
 {
   "name": "Oz Kit - Noir-Garaga-Ztarknet Kit",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "workspaceFolder": "/workspaces/quickstart",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/quickstart,type=bind",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
