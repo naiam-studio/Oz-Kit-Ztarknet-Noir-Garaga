@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # Uninstall and clean environment to start from scratch
-# This script removes Python (garaga), JS deps, and CLI tools: scarb, nargo, bb, sncast.
+# This script removes Python (garaga), JS deps, CLI tools (scarb, nargo, bb, sncast),
+# and cleans caches/build artifacts.
 # Optional: remove Rust toolchains (disabled by default; enable via --remove-rust).
 
 REMOVE_RUST=false
@@ -66,7 +67,18 @@ safe_sudo_rm /usr/local/bin/sncast
 safe_rm "$HOME/.cargo/bin/sncast"
 safe_rm "$HOME/.local/bin/sncast"
 
-# 7) Optional: Rust toolchains
+# 7) Caches and build artifacts
+log "Cleaning caches and build artifacts"
+safe_rm "$HOME/.cache/scarb"
+safe_rm "$HOME/.cache/pip"
+safe_rm "$REPO_DIR/circuit/target"
+safe_rm "$REPO_DIR/circuit/build"
+safe_rm "$REPO_DIR/verifier/target"
+safe_rm "$REPO_DIR/verifier/build"
+safe_rm "$REPO_DIR/build"
+safe_rm "$REPO_DIR/.venv"
+
+# 8) Optional: Rust toolchains
 if [[ "$REMOVE_RUST" == true ]]; then
   log "Removing Rust toolchains (rustup, cargo)"
   if command -v rustup >/dev/null 2>&1; then

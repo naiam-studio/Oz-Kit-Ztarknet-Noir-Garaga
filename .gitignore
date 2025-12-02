@@ -1,4 +1,44 @@
+# Environment variables
 .env
-node_modules
-target
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+target/
+build/
+dist/
+
+# Cairo/Scarb cache and artifacts
+frobenius_cache/
+Scarb.lock
+*.sierra.json
+*.casm.json
+
+# Noir artifacts
+Prover.toml
+Verifier.toml
+witness.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Temporary files
 *.txt
+*.log
+*.tmp
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
