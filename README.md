@@ -190,20 +190,12 @@ The repository provides Makefile targets to create an account, deploy it and che
 1) Install `sncast` (required)
 
 ```bash
-# Try the automated installer shipped with this repo. It will attempt
-# to download a prebuilt binary from common release locations and
-# place it in `/usr/local/bin`.
+# sncast is typically available in GitHub Codespaces and dev containers.
+# If not installed, use the automated installer:
 make install-sncast
 
-# If the automated installer fails, install manually by either:
-#  - Downloading a prebuilt release from the project's GitHub releases
-#    and moving the binary to /usr/local/bin/sncast, or
-#  - Building from source (if the project provides a Rust repo):
-#
-#    git clone <SNCAST_REPO_URL>
-#    cd sncast
-#    cargo build --release
-#    sudo mv target/release/sncast /usr/local/bin/sncast
+# Or run the script directly:
+./scripts/install-sncast.sh
 
 # Verify installation
 sncast --help

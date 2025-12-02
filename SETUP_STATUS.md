@@ -10,8 +10,8 @@
 | **Scarb** | 2.9.2 | ✓ Installed |
 | **Noir (nargo)** | 1.0.0-beta.1 | ✓ Installed |
 | **Barretenberg (bb)** | 0.67.0 | ✓ Installed |
+| **sncast** | 0.53.0 | ✓ Installed |
 | **npm** | 11.6.2 | ✓ Installed |
-| **sncast** | - | ⚠️ Manual install required |
 
 ## What Was Automated
 
@@ -19,7 +19,7 @@
 ✓ **Scarb installer script** - Download + fallback to source build  
 ✓ **Noir installer script** - Download + fallback to source build  
 ✓ **Barretenberg installer script** - Download + fallback to official installer  
-✓ **sncast installer script** - Tries multiple repos (fallback to manual)  
+✓ **sncast installer script** - Available and verified working (v0.53.0)  
 ✓ **JavaScript dependencies** - npm install in app/  
 ✓ **Makefile targets** - `make install-all`, `make setup`, etc.  
 ✓ **Verification script** - `./scripts/verify.sh` validates everything  
