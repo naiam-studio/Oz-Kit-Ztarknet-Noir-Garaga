@@ -169,11 +169,18 @@ Garaga generates the verifier contract for Starknet and serializes proofs as cal
 # Install via pip (recommended version)
 pip install --user garaga==0.15.5
 
+# Add user bin to PATH (required for pip --user installs)
+export PATH="$HOME/.local/bin:$PATH"
+
+# For persistence, add to your shell config:
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
 # Verify installation
-garaga --version  # Should output: garaga 0.15.5
+garaga --help  # Should show garaga commands
 ```
 
-Note: Ensure your Python user bin directory is in PATH (typically `~/.local/bin`).
+**Important:** The `--user` flag installs scripts to `~/.local/bin`, which must be in your PATH.
 
 #### 6. Install JavaScript Dependencies in `app`
 
@@ -196,6 +203,15 @@ After installation, verify all tools are available and at the correct versions:
 scarb --version      # Expected: scarb 2.9.2
 nargo --version      # Expected: nargo version = 1.0.0-beta.1
 bb --version         # Expected: 0.67.0
+garaga --help        # Should show garaga commands
+```
+
+**If `garaga` is not found:** Add `~/.local/bin` to your PATH:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ---

@@ -61,6 +61,10 @@ fi
 # 5. Garaga (Python CLI)
 echo ""
 echo "[5/6] Installing Garaga (Python CLI)..."
+
+# Ensure ~/.local/bin is in PATH for pip --user installs
+export PATH="$HOME/.local/bin:$PATH"
+
 if ! command -v garaga >/dev/null 2>&1; then
   if command -v pip3 >/dev/null 2>&1; then
     pip3 install --user garaga==0.15.5 || echo "Warning: pip3 install garaga failed."
@@ -69,8 +73,16 @@ if ! command -v garaga >/dev/null 2>&1; then
   else
     echo "Warning: pip/pip3 not found. Skipping Garaga installation."
   fi
+  
+  # Verify installation
+  if command -v garaga >/dev/null 2>&1; then
+    echo "Garaga installed successfully at $(which garaga)"
+  else
+    echo "Warning: Garaga installed but not in PATH. Add ~/.local/bin to your PATH."
+    echo "Run: export PATH=\"\$HOME/.local/bin:\$PATH\""
+  fi
 else
-  echo "Garaga already installed."
+  echo "Garaga already installed at $(which garaga)"
 fi
 
 # 6. JavaScript deps
@@ -84,6 +96,10 @@ echo ""
 echo "================================"
 echo "Setup complete!"
 echo "================================"
+echo ""
+echo "IMPORTANT: Add user bin to PATH if not already present:"
+echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+echo "  (Add this line to ~/.bashrc or ~/.zshrc for persistence)"
 echo ""
 echo "Next steps:"
 echo "  1. Install sncast: make install-sncast"
