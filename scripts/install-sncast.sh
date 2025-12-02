@@ -16,73 +16,57 @@ if command -v sncast >/dev/null 2>&1; then
   exit 0
 fi
 
-echo "sncast not found. Trying to download prebuilt releases from candidate repos..."
+echo "sncast not found. Attempting to download prebuilt release..."
+echo ""
 
-candidate_repos=(
-  "naiam-studio/sncast"
-  "naim-studio/sncast"
-  "Ztarknet/sncast"
-  "ztarknet/sncast"
-  "starknet-foundry/sncast"
-  "sncast/sncast"
+# sncast is part of starknet-foundry project at https://github.com/foundry-rs/starknet-foundry
+# Try the latest version first, then fallback to specific version
+
+candidate_urls=(
+  "https://github.com/foundry-rs/starknet-foundry/releases/download/v0.53.0/starknet-foundry-v0.53.0-x86_64-unknown-linux-gnu.tar.gz"
+  "https://github.com/foundry-rs/starknet-foundry/releases/latest/download/starknet-foundry-x86_64-unknown-linux-gnu.tar.gz"
 )
 
-asset_patterns=(
-  "sncast-linux-x86_64.tar.gz"
-  "sncast-x86_64-unknown-linux-gnu.tar.gz"
-  "sncast-linux-amd64.tar.gz"
-  "sncast-linux-amd64"
-  "sncast.tar.gz"
-)
-
-for repo in "${candidate_repos[@]}"; do
-  for asset in "${asset_patterns[@]}"; do
-    url="https://github.com/${repo}/releases/latest/download/${asset}"
-    echo "Trying $url"
-    set +e
-    curl -fSL "$url" -o "$TMPDIR/$asset"
-    rc=$?
-    set -e
-    if [ $rc -eq 0 ]; then
-      echo "Downloaded $asset from $repo"
-      # try to untar or move depending on file
-      if file "$TMPDIR/$asset" | grep -q 'gzip compressed'; then
-        tar -xzf "$TMPDIR/$asset" -C "$TMPDIR"
-      else
-        chmod +x "$TMPDIR/$asset"
-        mv "$TMPDIR/$asset" "$TMPDIR/sncast"
-      fi
-      if [ -f "$TMPDIR/sncast" ]; then
-        sudo mv "$TMPDIR/sncast" /usr/local/bin/sncast
-        sudo chmod +x /usr/local/bin/sncast
-        echo "Installed sncast to /usr/local/bin/sncast"
-        command -v sncast >/dev/null 2>&1 && exit 0
-      else
-        # try to find a binary extracted
-        binpath=$(find "$TMPDIR" -type f -name 'sncast' -perm /111 | head -n1 || true)
-        if [ -n "$binpath" ]; then
-          sudo mv "$binpath" /usr/local/bin/sncast
-          sudo chmod +x /usr/local/bin/sncast
-          echo "Installed sncast to /usr/local/bin/sncast"
-          command -v sncast >/dev/null 2>&1 && exit 0
-        fi
-      fi
+for url in "${candidate_urls[@]}"; do
+  echo "Trying: $url"
+  set +e
+  curl -fSL "$url" -o "$TMPDIR/foundry.tar.gz" 2>/dev/null
+  rc=$?
+  set -e
+  
+  if [ $rc -eq 0 ]; then
+    echo "Downloaded starknet-foundry. Extracting sncast..."
+    tar -xzf "$TMPDIR/foundry.tar.gz" -C "$TMPDIR"
+    
+    # Find sncast in the extracted archive
+    binpath=$(find "$TMPDIR" -type f -name 'sncast' -perm /111 | head -n1 || true)
+    if [ -n "$binpath" ]; then
+      sudo mv "$binpath" /usr/local/bin/sncast
+      sudo chmod +x /usr/local/bin/sncast
+      echo "Installed sncast to /usr/local/bin/sncast"
+      sncast --version && exit 0
     fi
-  done
+  fi
 done
 
-echo "Prebuilt release not found or installation failed. Trying other fallbacks..."
-
-# Try common installer URLs (placeholder examples)
-if command -v apt >/dev/null 2>&1; then
-  echo "No apt package known for sncast. Skipping apt install."
-fi
-
-# Final fallback: show helpful message and exit non-zero
-echo "Automatic installation failed. Please install 'sncast' manually."
-echo "Suggested steps (pick one):"
-echo "  - Check the project's GitHub releases and download a Linux binary/tarball and move to /usr/local/bin"
-echo "  - If the project provides an 'asdf' plugin, install via asdf: 'asdf plugin-add sncast <url> && asdf install sncast <version>'"
-echo "After installation, re-run: make account-create"
+echo ""
+echo "Failed to download prebuilt sncast from starknet-foundry."
+echo ""
+echo "Alternative installation methods:"
+echo ""
+echo "1. Official Starknet Foundry installer:"
+echo "   curl -L https://foundry.paradigm.xyz | bash"
+echo ""
+echo "2. Download from GitHub releases:"
+echo "   https://github.com/foundry-rs/starknet-foundry/releases"
+echo "   Download starknet-foundry-v*-x86_64-unknown-linux-gnu.tar.gz"
+echo "   Extract and move bin/sncast to /usr/local/bin/"
+echo ""
+echo "3. Build from source:"
+echo "   git clone https://github.com/foundry-rs/starknet-foundry"
+echo "   cd starknet-foundry"
+echo "   cargo build --release"
+echo "   sudo mv target/release/sncast /usr/local/bin/"
+echo ""
 
 exit 2
